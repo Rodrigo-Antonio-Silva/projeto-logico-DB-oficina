@@ -3,6 +3,7 @@
 
 <h3>📌 Descrição do Projeto</h3>
 <p>Este projeto representa um modelo de banco de dados relacional para uma oficina mecânica.</p>
+<p>Segundo projeto Lógico de Banco de Dados do Bootcamp DIO Suzano Análise de dados</p>
 
 <h3>📊 Modelo Entidade-Relacionamento (ER)</h3>
 
