@@ -1,59 +1,62 @@
-🚗 Sistema de Gestão para Oficina Mecânica
+# Projeto-Logico-de-Banco-de-Dados
+<h1>🚗  Sistema de Gestão para Oficina Mecânica </h1>
 
-📌 Descrição do Projeto
-Este projeto representa um modelo de banco de dados relacional para uma oficina mecânica. Ele permite gerenciar clientes, veículos, serviços, mecânicos e equipes, além de calcular faturamento e acompanhar o status dos serviços.
+<h3>📌 Descrição do Projeto</h3>
+<p>Este projeto representa um modelo de banco de dados relacional para uma oficina mecânica.</p>
 
-📊 Modelo Entidade-Relacionamento (ER)
+<h3>📊 Modelo Entidade-Relacionamento (ER)</h3>
 
-O modelo foi criado com base nos seguintes conceitos:
+<b>O modelo foi criado com base nos seguintes conceitos:</b>
 
-Clientes possuem veículos.
+<ul>
+<li>Clientes possuem veículos.</li>
+<li>Veículos podem ter vários serviços.</li>
+<li>Serviços são executados por uma equipe de mecânicos.</li>
+<li>Serviços podem envolver peças e mão de obra com valores específicos.</li>
+</ul>
 
-Veículos podem ter vários serviços.
+<h3>🛠 Modelo Lógico - SQL</h3>
 
-Serviços são executados por uma equipe de mecânicos.
+<b>O banco de dados foi estruturado da seguinte forma:</b>
 
-Serviços podem envolver peças e mão de obra com valores específicos.
+<i>🔹 Tabelas Principais</i>
+<ul>
+<li>cliente – Armazena informações dos clientes.</li>
+<li>veiculo – Contém dados dos veículos cadastrados.</li>
+<li>servico – Registra os serviços realizados.</li>
+<li>mecanicos – Lista os mecânicos disponíveis.</li>
+<li>equipe – Grupos de mecânicos especializados.</li>
+</ul>
+<i>🔗 Relacionamentos</i>
+<ul>
+<li>cliente_veiculo – Relaciona clientes aos seus veículos.</li>
+<li>veiculos_servico – Associa veículos aos serviços realizados.</li>
+<li>servico_preco_mao_obra – Liga serviços aos valores de mão de obra.</li>
+<li>servicos_preco_peca – Conecta serviços às peças utilizadas.</li>
+</ul>
+<h3>1️⃣ Criar o Banco de Dados</h3>
+## Estrutura do Banco de Dados da Oficina
 
-🛠 Modelo Lógico - SQL
+Este repositório contém o script SQL para criar o banco de dados da oficina.
 
-O banco de dados foi estruturado da seguinte forma:
+### Estrutura das Tabelas
 
-🔹 Tabelas Principais
-
-cliente – Armazena informações dos clientes.
-
-veiculo – Contém dados dos veículos cadastrados.
-
-servico – Registra os serviços realizados.
-
-mecanicos – Lista os mecânicos disponíveis.
-
-equipe – Grupos de mecânicos especializados.
-
-🔗 Relacionamentos
-
-cliente_veiculo – Relaciona clientes aos seus veículos.
-
-veiculos_servico – Associa veículos aos serviços realizados.
-
-servico_preco_mao_obra – Liga serviços aos valores de mão de obra.
-
-servicos_preco_peca – Conecta serviços às peças utilizadas.
-
-1️⃣ Criar o Banco de Dados
+```sql
 CREATE DATABASE oficina;
 USE oficina;
 
-2️⃣ Criar as Tabelas
+-- ... (restante do seu código SQL) ...
+CREATE DATABASE oficina;
+USE oficina;
+
 CREATE TABLE cliente (
     idCliente INT PRIMARY KEY auto_increment,
-    Pnome VARCHAR(15) not null,
+    Pnome VARCHAR(15),
     NomeMeio VARCHAR(15),
-    Sobrenome VARCHAR(15) not null,
-    CPF CHAR(11) not null,
+    Sobrenome VARCHAR(15),
+    CPF CHAR(11) UNIQUE,
     endereco VARCHAR(45),
-    Data_nasc DATE not null,
+    Data_nasc DATE,
     constraint cliente_dpf unique(CPF)
 );
 
@@ -77,7 +80,7 @@ CREATE TABLE servico (
     idServico INT PRIMARY KEY auto_increment,
     TpServico ENUM('Troca de Óleo', 'Revisão', 'Pintura') default 'Revisão', 
     DtAvaliacao DATE not null,
-    DtEntrega DATE,
+    DtEntrega DATE not null,
     StatusServico Enum('Aberto', 'Em andamento', 'Concluído', 'Fechado') NOT NULL default 'Aberto',
     ValorServico DECIMAL(10,2) NOT NULL,
     Equipe_idEquipe INT,
@@ -124,22 +127,21 @@ CREATE TABLE mecanicos (
     idMecanicos INT PRIMARY KEY auto_increment,
     Nome VARCHAR(15) not null,
     Cod VARCHAR(15) not null,
-    CPF CHAR(11) NOT NULL,
+    CPF CHAR(11) NOT NULL UNIQUE,
     logradouro VARCHAR(25) NOT NULL,
     cidade VARCHAR(15) NOT NULL,
     estado CHAR(2) NOT NULL,
     Especialidade VARCHAR(15) NOT NULL,
-    constraint mecanicos_CPF unique(CPF)
+    constraint CPF_mecanicos unique(CPF)
 );
 
 CREATE TABLE equipe (
-    idEquipe INT PRIMARY KEY auto_increment,
+    idEquipe INT PRIMARY KEY,
     Especialidade VARCHAR(45),
     idLider INT,
     constraint equipe_lider_fk FOREIGN KEY (idLider) REFERENCES mecanicos(idMecanicos)
-);
-
-4️⃣ Executar Consultas
+); 
+4️⃣ ############### Executar Consultas ####################
 
 🔎 Listar todos os clientes e seus veículos
 
